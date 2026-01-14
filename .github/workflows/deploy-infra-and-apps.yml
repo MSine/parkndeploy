@@ -1,9 +1,11 @@
-on: [push, workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 
 permissions:
-  # Require write permission to Fetch an OIDC token (required for federated credential) and write it
-  # It will be automatically used on actions / cli that needs it
   id-token: write
 
 env: 
