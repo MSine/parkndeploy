@@ -1,10 +1,8 @@
-targetScope = 'resourceGroup' // We'll deploy the resources in the provided resource group
+targetScope = 'resourceGroup'
 
-// Parameters to easily construct resource names
+param swaLocation string
 param location string
 param project string
-
-// Here we'll add an identifier to create a unique name for the App Service Plan, for example your trigram, so that everyone could deploy his own parkndeploy instance
 param identifier string
 
 // Create the AppServicePlan through the AppServicePlan module
@@ -28,5 +26,15 @@ module appService 'modules/appService.bicep' = {
   }
 }
 
-// Export App Service Name
-output appServiceName string = appService.outputs.appServiceName
+// Create the Static Web App through the StaticWebApp module
+module staticWebApp 'modules/staticWebApp.bicep' = {
+  name: 'staticWebApp'
+  params: {
+    location: swaLocation
+    project: project
+    identifier: identifier
+  }
+}
+
+output appServiceName string = appService.outputs.appServiceName // Export AppServiceName in order to deploy the API later on
+output staticWebAppName string = staticWebApp.outputs.swaName // Export StaticWebAppName in order to deploy the Frontend late
