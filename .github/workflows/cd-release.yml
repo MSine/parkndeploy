@@ -15,8 +15,8 @@ env:
 
 jobs:
   deploy_infrastructure:
-    name: Deploy Applications
     runs-on: ubuntu-latest
+    environment: production
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     outputs:
