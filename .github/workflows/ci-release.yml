@@ -1,0 +1,59 @@
+name: CI Release Pipeline
+
+on:
+  push:
+    branches: 
+    - "main"
+  release:
+    types: 
+    - published
+
+jobs:
+  frontend_ci:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '16'
+
+    - name: Build the app
+      run: npm ci && npm run build
+      working-directory: ./frontend    
+
+    - name: Upload frontend artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-build
+        path: ./backend/ParkNDeploy.Api/publish
+
+  backend_ci:
+    name: Backend - Publish & Artifact
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK 9.0.x
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      working-directory: backend
+      run: dotnet restore
+
+    - name: Publish backend
+      working-directory: backend
+      run: dotnet publish -c Release
+
+    - name: Upload backend artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: backend-publish
+        path: ./backend/ParkNDeploy.Api/publish
