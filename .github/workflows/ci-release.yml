@@ -26,6 +26,8 @@ jobs:
         node-version: '22'
 
     - name: Build the app
+      env:
+        VITE_APP_VERSION: ${{ github.ref_name }}
       run: npm ci && npm run build
       working-directory: ./frontend    
 
