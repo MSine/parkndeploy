@@ -21,6 +21,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        ref: main
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
@@ -36,7 +38,7 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@github.com"
         git add frontend/package.json frontend/package-lock.json
-        git commit -m "chore(frontend): release v$(node -p "require('./package.json').version")"
+        git commit -m "chore(frontend): release $(node -p "require('./package.json').version")"
         git push
 
   frontend_ci:
