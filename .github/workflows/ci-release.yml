@@ -29,8 +29,10 @@ jobs:
       with:
         node-version: '22'
 
-    - name: Build the app
-      run: npm version patch --no-git-tag-version
+    - name: Set Version
+      run: |
+        VERSION="${GITHUB_REF#refs/tags/}"
+        npm version $VERSION
       working-directory: ./frontend    
 
     - name: Commit version bump
@@ -38,7 +40,7 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@github.com"
         git add frontend/package.json frontend/package-lock.json
-        git commit -m "chore(frontend): release $(node -p "require('./package.json').version")"
+        git commit -m "chore: release $VERSION"
         git push
 
   frontend_ci:
