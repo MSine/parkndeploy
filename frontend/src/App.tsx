@@ -9,7 +9,6 @@ import ParkingListFilters from "@/components/ParkingList/ParkingListFilters";
 import { useParkingSearchStore } from "@/stores/parkingSearchStore";
 
 function App() {
-  const version = import.meta.env.VITE_APP_VERSION;
   const { parkingName } = useParkingSearchStore();
 
   const { data, isPending, isError } = useQuery({
@@ -33,7 +32,7 @@ function App() {
       {isError && <span>Something went wrong with the backend ...</span>}
       {data && <ParkingList parkings={data.parkings} />}
       <footer>
-        <span>Version: {version}</span>
+        <span>Version: {APP_VERSION}</span>
       </footer>
     </div>
   );
