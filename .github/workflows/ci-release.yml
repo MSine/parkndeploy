@@ -74,4 +74,5 @@ jobs:
   call_cd:
     needs: [backend_ci, frontend_ci]
     uses: ./.github/workflows/cd-release.yml
+    secrets: inherit
 
